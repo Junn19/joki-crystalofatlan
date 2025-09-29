@@ -1,44 +1,31 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Joki Crystal of Atlan</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-  <header>
-    <h1>Joki Crystal of Atlan</h1>
-    <p>Fast • Aman • Terpercaya</p>
-  </header>
+<section class="pricelist">
+  <h2>Pricelist</h2>
+  <div id="pricelist-container">Loading...</div>
+</section>
 
-  <section class="pricelist">
-    <h2>Pricelist</h2>
-    <div class="card">
-      <h3>Paket Bronze</h3>
-      <p>Clear Dungeon / Quest</p>
-      <span>Rp 20.000</span>
-    </div>
-    <div class="card">
-      <h3>Paket Silver</h3>
-      <p>Leveling Cepat (1–10 Level)</p>
-      <span>Rp 50.000</span>
-    </div>
-    <div class="card">
-      <h3>Paket Gold</h3>
-      <p>Full Support Quest + Leveling</p>
-      <span>Rp 100.000</span>
-    </div>
-  </section>
+<script>
+  async function loadPricelist() {
+    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTqMSdx0xjVAFbyXzHW6qARDSlkDHLHJHBshUpujVuR-4N9d3XTNEj_gd1u6hqslF2R_SyOqY8TBAey/pubhtml"; // ganti dengan link CSV dari publish
+    const response = await fetch(url);
+    const data = await response.text();
+    const rows = data.split("\n").slice(1); // skip header
 
-  <section class="contact">
-    <h2>Pesan Sekarang</h2>
-    <a href="https://wa.me/6281234567890" class="btn">Chat WhatsApp</a>
-    <a href="https://discord.gg/yourserver" class="btn">Join Discord</a>
-  </section>
+    let html = "";
+    rows.forEach(row => {
+      const cols = row.split(",");
+      if (cols.length >= 3) {
+        html += `
+          <div class="card">
+            <h3>${cols[0]}</h3>
+            <p>${cols[1]}</p>
+            <span>${cols[2]}</span>
+          </div>
+        `;
+      }
+    });
 
-  <footer>
-    <p>© 2025 Joki Crystal of Atlan. All rights reserved.</p>
-  </footer>
-</body>
-</html>
+    document.getElementById("pricelist-container").innerHTML = html;
+  }
+
+  loadPricelist();
+</script>
